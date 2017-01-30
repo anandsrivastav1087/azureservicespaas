@@ -1,0 +1,170 @@
+﻿@model IEnumerable<WebRole1.Models.ServiceBusQueue>
+@{
+    ViewBag.Title = "Service Bus";
+}
+
+<h2>Service Bus.............</h2>
+<script>
+    function GetQueue() {
+        if (document.getElementById('txtQueueName').value == "") {
+            alert("Queue Name cannot be blank");
+            return false;
+        }
+        var objService = {
+            "QueueName": document.getElementById('txtQueueName').value
+        }
+        $.post("/ServiceBus/Receive", { "objServiceBusQueue": objService }, function (data) {
+            var ds="";
+            for (var i = 0; i < data.length; i++) {
+                ds += "<div class='row'><div class='form-group'><div class='col-lg-4'>" + data[i].Message + "</div></div></div>";
+            }
+            document.getElementById('body').innerHTML = ds;
+        });
+        return false;
+    }
+</script>
+<div class="panel panel-default">
+    <div class="panel-body">
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a href="#Queue" data-toggle="tab" aria-expanded="true">Queue</a>
+            </li>
+            <li class="">
+                <a href="#Topic" data-toggle="tab" aria-expanded="false">Topic</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div  class="tab-pane fade in active" id="Queue">
+                @using (Html.BeginForm("ServiceBus", "ServiceBus", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal" }))
+                {
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Enter Message
+                        </div>
+                        <div class="panel-body ">
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-lg-3 text-right">Queue Name</div>
+                                    <div class="col-lg-5">
+                                        <input id="txtQueueName" name="QueueName" class="form-control" type="text" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-lg-3 text-right">Message Count</div>
+                                    <div class="col-lg-5">
+                                        <input id="txtMessage" name="MsgNumber" class="form-control" type="text" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-lg-3 text-right">Test Property</div>
+                                    <div class="col-lg-5">
+                                        <input id="txtMessage" name="TestProperty" class="form-control" type="text" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-lg-3 text-right">Enter Message</div>
+                                    <div class="col-lg-5">
+                                        <input id="txtMessage" name="Message" class="form-control" type="text" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-footer">
+                            <input id="btnSend" type="submit" value="Send" class="btn btn-default" />
+                            @Html.ActionLink("Receive", "Receive", "ServiceBus", new { @class = "btn btn-default", @onclick = "return GetQueue();" })
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Queued Message
+                        </div>
+                        <div class="panel-body " id="body">
+
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-lg-4" id="queue"></div>
+                                    <div class="col-lg-8" id="msg"></div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                }
+            </div>
+            <div  class="tab-pane fade" id="Topic">
+                <script>
+                    function GetTopic() {
+                        $.post("/ServiceBus/ReceiveTopic", function (data) {
+                            debugger;
+                            var ds = "";
+                            for (var i = 0; i < data.length; i++) {
+                                ds += "<div class='row'><div class='form-group'><div class='col-lg-4 text-right'>" + data[i].Subcription + "</div><div class='col-lg-4'>" + data[i].TPMessage + "</div></div></div>";
+                            }
+                            document.getElementById('topicbody').innerHTML = ds;
+                        });
+                        return false;
+                    }
+                </script>
+                @using (Html.BeginForm("CreateTopic", "ServiceBus", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal" }))
+                {
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Enter Message
+                        </div>
+                        <div class="panel-body ">
+                            @*<div class="row">
+                                <div class="form-group">
+                                    <div class="col-lg-3 text-right">Topic</div>
+                                    <div class="col-lg-5">
+                                        <input id="txtTopic" name="Topic" class="form-control" type="text" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-lg-3 text-right">Subscription</div>
+                                    <div class="col-lg-5">
+                                        <input id="txtSubscription" name="Subcription" class="form-control" type="text" />
+                                    </div>
+                                </div>
+                            </div>*@
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-lg-3 text-right">Message</div>
+                                    <div class="col-lg-5">
+                                        <input id="txttopicMessage" name="TPMessage" class="form-control" type="text" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-footer">
+                            <input id="btnCreateTopic" type="submit" value="Create Topic" class="btn btn-default" />
+                            @Html.ActionLink("Receive", "topicReceive", "ServiceBus", new { @class = "btn btn-default", @onclick = "return GetTopic();" })
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Topic Message
+                        </div>
+                        <div class="panel-body " id="topicbody">
+
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-lg-4" id="queue"></div>
+                                    <div class="col-lg-8" id="msg"></div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

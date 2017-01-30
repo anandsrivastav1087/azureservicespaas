@@ -1,0 +1,168 @@
+﻿@*@model IEnumerable<WebRole1.Models.tblStorage>*@
+@{
+    ViewBag.Title = "table storage";
+    WebGrid grid = new WebGrid(Model);
+}
+
+<script>
+    function ValidationOnSave() {      
+        var tbldata = {
+            "RowKey": document.getElementById("txtEmployeeID").value,
+            "PartitionKey": document.getElementById("txtName").value,
+            "address": document.getElementById("txtAddress").value,
+            "PhoneNumber": document.getElementById("txtPhone").value,
+            "Email": document.getElementById("txtEmail").value
+        };
+        $.post("/UploadFile/tablestorage", { "tbldata": tbldata }, function (data) {
+            alert(data);
+            return false;
+        });
+        return false;
+    }
+
+    function UpdateDelete(partition, key, command) {
+        debugger;
+
+        var tbldata = {
+            "RowKey": key,
+            "PartitionKey": partition
+        };
+        if (command == "d") {
+            document.getElementById("txtEmployeeID").value = key;
+            document.getElementById("txtName").value = partition;
+        }
+        else {
+            $.post("/UploadFile/editupdate", { "tbldata": tbldata, "command": command }, function (data) {
+                debugger;
+                if (command == "e") {
+                    document.getElementById("txtEmployeeID").value = data.RowKey;
+                    document.getElementById("txtEmployeeID").readOnly = true;
+                    document.getElementById("txtName").value = data.PartitionKey;
+                    document.getElementById("txtName").readOnly = true;
+                    document.getElementById("txtAddress").value = data.address;
+                    document.getElementById("txtPhone").value = data.PhoneNumber;
+                    document.getElementById("txtEmail").value = data.Email;
+                }
+                else {
+                    alert(data);
+                }
+                return false;
+            });
+            return false;
+        }
+       
+        
+    }
+</script>
+
+<h2>Table storage</h2>
+@using (Html.BeginForm("tablestorage", "UploadFile", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal" }))
+{
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Entry Form
+        </div>
+        <div class="panel-body ">
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-lg-3 text-right">Employee ID</div>
+                    <div class="col-lg-5">                        
+                        <input id="txtEmployeeID" name="RowKey" class="form-control" type="text" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-lg-3 text-right">Name</div>
+                    <div class="col-lg-5">
+                        <input id="txtName" name="PartitionKey" class="form-control" type="text" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-lg-3 text-right">Address</div>
+                    <div class="col-lg-5">
+                        <input id="txtAddress" name="address" class="form-control" type="text" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-lg-3 text-right">Phone</div>
+                    <div class="col-lg-5">
+                        <input id="txtPhone" name="PhoneNumber" class="form-control" type="text" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-lg-3 text-right">Email</div>
+                    <div class="col-lg-5">
+                        <input id="txtEmail" name="Email" class="form-control" type="text" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer">
+            <input id="btnInsert" type="submit" value="Submit" class="btn btn-default" />
+            @*@Html.ActionLink("Insert", "tablestorage", "UploadFile",new {@onclick="return ValidationOnSave();", @class = "btn btn-default", @id = "btnInsert" })*@
+        </div>
+    </div>
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            Storage File List
+        </div>
+        <div class="panel-body">
+            <div class="dataTable_wrapper">
+                @grid.GetHtml(tableStyle: "table table-striped table-bordered table-hover",
+         headerStyle: "header",
+         alternatingRowStyle: "alt",
+         selectedRowStyle: "select",
+        columns: grid.Columns(
+             grid.Column("PartitionKey", "Name"),
+             grid.Column("RowKey", " Code"),
+             grid.Column("address", "Address"),
+             grid.Column("Email", "Email"),
+             grid.Column(header: "Action", format: @<text>             
+                  @Html.ActionLink("Edit", "editupdate", "UploadFile", new { @command = "e" }, new {@onclick= "return UpdateDelete('" + item.PartitionKey + "','"+ item.RowKey + "','e');", @class = "btn btn-warning btn-xs", @id = "btnEdit" })                  
+                @Html.ActionLink("Delete", "editupdate", "UploadFile", new { @command = "d", @PartitionKey = item.PartitionKey, @RowKey = item.RowKey }, new { @onclick = "return UpdateDelete('" + item.PartitionKey + "','" + item.RowKey + "','d');", @class = "btn btn-danger btn-xs", @id = "btnDelete" })
+            </text>
+              )
+             )
+     )
+                @*<table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                    <thead>
+                        <tr>
+                            <th>Name </th>
+                            <th>key</th>                            
+                            <th>address</th>
+                            <th>Email</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                       
+                        @foreach (var item in Model)
+                        {
+
+                            <tr>
+                                <td>@item.PartitionKey</td>
+                                <td>@item.RowKey</td>
+                                <td>@item.address</td>
+                                <td>@item.Email</td>
+                                <td>
+                                    @Html.ActionLink("Edit", "editupdate", "UploadFile", new { @parition = item.PartitionKey }, new { @class = "btn btn-warning btn-xs", @id = "btnEdit" })
+                                    @Html.ActionLink("Delete", "delete", "UploadFile", new { @parition = item.PartitionKey }, new { @class = "btn btn-danger btn-xs", @id = "btnDelete" })
+
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>*@
+            </div>
+        </div>
+    </div>
+}
+
+

@@ -1,0 +1,97 @@
+﻿
+@{
+    ViewBag.Title = "Radis";
+    WebGrid grid = new WebGrid(Model);
+}
+
+<script type="text/javascript">
+    function ValidationtoSave(e) {
+        var empdetails = {
+            "EmployeeCode": document.getElementById('txtEmployeeID').value,
+            "EmpName": document.getElementById('txtName').value,
+            "Address": document.getElementById('txtAddress').value,
+            "MobileNo": document.getElementById('txtPhone').value
+        };
+        $.post("/RadisCache/RadisCacheCreate", { "objEmployee": empdetails }, function (data) {
+            if (data.Message != "") {
+                alert(data.Message);
+            }
+            document.getElementById('txtEmployeeID').value = "";
+            document.getElementById('txtName').value = "";
+            document.getElementById('txtAddress').value = "";
+            document.getElementById('txtPhone').value = "";
+        });
+        return false;
+    }
+</script>
+<h2>RadisCache.............</h2>
+
+
+<form class="form-horizontal">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Employee Details
+        </div>
+        <div class="panel-body ">
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-lg-3 text-right">Employee Code</div>
+                    <div class="col-lg-5">
+                        <input id="txtEmployeeID" name="EmployeeCode" class="form-control" type="text" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-lg-3 text-right">Name</div>
+                    <div class="col-lg-5">
+                        <input id="txtName" name="EmpName" class="form-control" type="text" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-lg-3 text-right">Address</div>
+                    <div class="col-lg-5">
+                        <input id="txtAddress" name="Address" class="form-control" type="text" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-lg-3 text-right">Mobile No</div>
+                    <div class="col-lg-5">
+                        <input id="txtPhone" name="MobileNo" class="form-control" type="text" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer">            
+            @Html.ActionLink("Submit","","",new {@class="btn btn-default",@onclick= "return ValidationtoSave(event);" })
+            @Html.ActionLink("Display", "RadisCacheDisplay", "RadisCache", new { @class = "btn btn-default"})
+        </div>
+    </div>
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            Employee List
+        </div>
+        <div class="panel-body">
+            <div class="dataTable_wrapper">
+                @grid.GetHtml(tableStyle: "table table-striped table-bordered table-hover",
+         headerStyle: "header",
+         alternatingRowStyle: "alt",
+         selectedRowStyle: "select",
+        columns: grid.Columns(
+             grid.Column("EmpID", "ID"),
+             grid.Column("EmpName", " Name"),
+             grid.Column("EmployeeCode", "Employee Code"),
+             grid.Column("MobileNo", "Mobile No"),
+             grid.Column("Address", "Address")
+
+              )
+             )
+     
+            </div>
+        </div>
+    </div>
+</form>

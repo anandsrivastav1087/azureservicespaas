@@ -1,0 +1,40 @@
+﻿
+@{
+    ViewBag.Title = "QueueStorage";
+}
+
+<h2>Queue Storage.........</h2>
+
+@using (Html.BeginForm("QueueStorage", "UploadFile", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal" }))
+{
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            File Uploading.....
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-lg-3 text-right">Select File</div>
+                    <div class="col-lg-7">
+                        <input id="flUpload" type="file" name="file"/>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-lg-3 text-right">Message</div>
+                    <div class="col-lg-7">
+                        <input id="txtMessage" type="text" name="Name" class="form-control" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 text-left alert-warning">@ViewBag.message</div>
+            </div>
+        </div>
+        <div class="panel-footer">
+            <input id="btnUpload" type="submit" value="Upload" class="btn btn-default" />
+        </div>
+    </div>
+}
+

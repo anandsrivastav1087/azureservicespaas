@@ -16,6 +16,7 @@ namespace WebRole1.Controllers
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
+            
 
             return View();
         }
@@ -26,5 +27,7 @@ namespace WebRole1.Controllers
 
             return View();
         }
+
+       
     }
 }

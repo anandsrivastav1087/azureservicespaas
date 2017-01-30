@@ -1,9 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ServiceConfiguration serviceName="fileuploadstoragepoc" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration" osFamily="4" osVersion="*" schemaVersion="2015-04.2.6">
   <Role name="WebRole1">
+    <Instances count="2" />
+    <ConfigurationSettings>
+      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="DefaultEndpointsProtocol=https;AccountName=anandpoc;AccountKey=6jMceIFY8E0kztYzQeNQGvlRV7ZYkFR+PyPX9FY8n4WJE4g1HvDV1/761BwrDM9q0izIKERBcgWU7iRBD1ZkvA==" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.Enabled" value="true" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountUsername" value="anand" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountEncryptedPassword" value="MIIBnQYJKoZIhvcNAQcDoIIBjjCCAYoCAQAxggFOMIIBSgIBADAyMB4xHDAaBgNVBAMME1dpbmRvd3MgQXp1cmUgVG9vbHMCEF9hy8nbK7KnRJrN8xqM8hgwDQYJKoZIhvcNAQEBBQAEggEAT1zfBXHqhdQcaS11pCqwfZfJWLjO7tlYbWKBPRNSfluz7qDqfFOVTgFm8wteWFdfA8krLVs6kaVR5IJ+2aIpbBvr6B+ovHm6LHb16Tb234qBCXemPkM621Ps3K1Y8IhT7GSIC4IBuCx8y7KBjGs/BjMA/X7SRRF/Gs9DxqkY52xDrz09gihfaVBmCYEbrFb9z81pPnIO6yqSCbjaDJcQbDVT44xSV5onxwZYhdHZXBp2S8QfT6t0V3g7k0kVIYWy3WTBfsMJmbCgayt/6AdF6MZVjVMVN6+vjSEicE2UCc/I9ZgtNJ8ztz0GDZgScomPVt2+bqPpbEjgX/V1Msk0ejAzBgkqhkiG9w0BBwEwFAYIKoZIhvcNAwcECKwk50HUId6pgBCMUft3yLyhaW7S8oMTdYW1" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountExpiration" value="2017-05-23T23:59:59.0000000+05:30" />
+      <Setting name="APPINSIGHTS_INSTRUMENTATIONKEY" value="d2bab01b-5869-4b4d-b63a-f4bf051cf3f2" />
+    </ConfigurationSettings>
+    <Certificates>
+      <Certificate name="Microsoft.WindowsAzure.Plugins.RemoteAccess.PasswordEncryption" thumbprint="18A7BDA06EC59CDE6AB9F8FE5FB9A3431FD75A43" thumbprintAlgorithm="sha1" />
+    </Certificates>
+  </Role>
+  <Role name="WorkerRole">
     <Instances count="1" />
     <ConfigurationSettings>
-      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="UseDevelopmentStorage=true" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="DefaultEndpointsProtocol=https;AccountName=anandpoc;AccountKey=6jMceIFY8E0kztYzQeNQGvlRV7ZYkFR+PyPX9FY8n4WJE4g1HvDV1/761BwrDM9q0izIKERBcgWU7iRBD1ZkvA==" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.Enabled" value="true" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountUsername" value="anand" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountEncryptedPassword" value="MIIBnQYJKoZIhvcNAQcDoIIBjjCCAYoCAQAxggFOMIIBSgIBADAyMB4xHDAaBgNVBAMME1dpbmRvd3MgQXp1cmUgVG9vbHMCEF9hy8nbK7KnRJrN8xqM8hgwDQYJKoZIhvcNAQEBBQAEggEAT1zfBXHqhdQcaS11pCqwfZfJWLjO7tlYbWKBPRNSfluz7qDqfFOVTgFm8wteWFdfA8krLVs6kaVR5IJ+2aIpbBvr6B+ovHm6LHb16Tb234qBCXemPkM621Ps3K1Y8IhT7GSIC4IBuCx8y7KBjGs/BjMA/X7SRRF/Gs9DxqkY52xDrz09gihfaVBmCYEbrFb9z81pPnIO6yqSCbjaDJcQbDVT44xSV5onxwZYhdHZXBp2S8QfT6t0V3g7k0kVIYWy3WTBfsMJmbCgayt/6AdF6MZVjVMVN6+vjSEicE2UCc/I9ZgtNJ8ztz0GDZgScomPVt2+bqPpbEjgX/V1Msk0ejAzBgkqhkiG9w0BBwEwFAYIKoZIhvcNAwcECKwk50HUId6pgBCMUft3yLyhaW7S8oMTdYW1" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountExpiration" value="2017-05-23T23:59:59.0000000+05:30" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteForwarder.Enabled" value="true" />
+      <Setting name="APPINSIGHTS_INSTRUMENTATIONKEY" value="d2bab01b-5869-4b4d-b63a-f4bf051cf3f2" />
     </ConfigurationSettings>
+    <Certificates>
+      <Certificate name="Microsoft.WindowsAzure.Plugins.RemoteAccess.PasswordEncryption" thumbprint="18A7BDA06EC59CDE6AB9F8FE5FB9A3431FD75A43" thumbprintAlgorithm="sha1" />
+    </Certificates>
   </Role>
 </ServiceConfiguration>
